@@ -1,5 +1,9 @@
 <template>
-  <div class="layout--default" />
+  <div class="layout--default">
+    <main>
+      <slot />
+    </main>
+  </div>
 </template>
 
 <script>
