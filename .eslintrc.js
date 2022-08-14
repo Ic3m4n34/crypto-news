@@ -3,4 +3,7 @@ module.exports = {
     'airbnb-base',
     'plugin:vue/vue3-recommended',
   ],
+  rules: {
+    'max-len': 0,
+  },
 };

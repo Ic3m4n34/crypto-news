@@ -1,8 +1,6 @@
 <template>
   <div class="index">
-    <h1 class="text-red-800">
-      hello
-    </h1>
+    <NewsHeader />
   </div>
 </template>
 
