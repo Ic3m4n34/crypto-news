@@ -84,7 +84,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 
 export default defineComponent({
   props: {
@@ -93,7 +93,10 @@ export default defineComponent({
       required: true,
     },
   },
-  setup() {
+  async setup() {
+    const { data: articles } = await useFetch('/api/tags/bitcoin');
+    const displayArticles = computed(() => articles.value.slice(0, 6));
+
     const posts = [
       {
         title: 'Boost your conversion rate',
@@ -153,6 +156,7 @@ export default defineComponent({
 
     return {
       posts,
+      displayArticles,
     };
   },
 });

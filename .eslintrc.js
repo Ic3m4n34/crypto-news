@@ -45,5 +45,6 @@ module.exports = {
     useQuery: true,
     useStorage: true,
     defineEventHandler: true,
+    useFetch: true,
   },
 };
