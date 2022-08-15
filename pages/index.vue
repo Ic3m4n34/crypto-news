@@ -1,6 +1,7 @@
 <template>
   <div class="index">
     <NewsHeader />
+    <NewsSection headline="Bitcoin" />
   </div>
 </template>
 
