@@ -24,4 +24,9 @@ module.exports = {
       },
     ],
   },
+  globals: {
+    useQuery: true,
+    useStorage: true,
+    defineEventHandler: true,
+  },
 };
