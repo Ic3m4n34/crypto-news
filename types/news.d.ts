@@ -1,4 +1,4 @@
-export interface News {
+export interface NewsEntry {
   id: string;
   title: string;
   summary: string;
@@ -12,4 +12,8 @@ export interface News {
   tags: string[];
   language: 'english' | 'spanish' | 'german' | 'french' | 'italian' | 'portuguese' | 'russian';
   s3_image_url: string;
+}
+
+export interface CookedNews extends NewsEntry {
+  readingTime: number;
 }

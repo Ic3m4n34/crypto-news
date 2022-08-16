@@ -40,11 +40,13 @@ module.exports = {
         tsx: 'never',
       },
     ],
+    'vue/no-v-html': 0,
   },
   globals: {
     useQuery: true,
     useStorage: true,
     defineEventHandler: true,
     useFetch: true,
+    useRoute: true,
   },
 };

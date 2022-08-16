@@ -1,7 +1,7 @@
 <template>
   <div class="index">
     <NewsHeader />
-    <NewsSection headline="Bitcoin" />
+    <NewsSection headline="Bitcoin" tag="bitcoin" />
   </div>
 </template>
 
