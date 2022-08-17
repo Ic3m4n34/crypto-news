@@ -2,6 +2,14 @@ import { defineNuxtConfig } from 'nuxt';
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
+  app: {
+    head: {
+      htmlAttrs: {
+        lang: 'en',
+      },
+      title: 'Crypto News',
+    },
+  },
   css: [
     '@/assets/css/main.css',
   ],

@@ -5,9 +5,9 @@
     </div>
     <div class="relative max-w-7xl mx-auto">
       <div class="text-center">
-        <h2 class="text-3xl tracking-tight font-bold text-gray-900 sm:text-4xl sm:tracking-tight">
-          {{ capitalizeFirstLetter(tag) }}
-        </h2>
+        <h1 class="text-3xl tracking-tight font-bold text-gray-900 sm:text-4xl sm:tracking-tight">
+          {{ capitalizeFirstLetter(tag) }} News
+        </h1>
         <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
           Here are the latest <span class="font-bold">{{ capitalizeFirstLetter(tag) }}</span> news.
         </p>
@@ -34,6 +34,15 @@ export default defineComponent({
     const route = useRoute();
     const { tag } = route.params;
     const { data: articles } = await useFetch(`/api/tags/${tag}`);
+
+    useHead({
+      title: `${capitalizeFirstLetter(tag)} - All News`,
+      charset: 'utf-8',
+      lang: 'en',
+      meta: [
+        { name: 'description', content: `We've curated ${capitalizeFirstLetter(tag)} News from every Crypto News Source. Read all the latest Ethereum News!` },
+      ],
+    });
 
     return {
       articles,

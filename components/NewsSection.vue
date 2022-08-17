@@ -6,7 +6,7 @@
     <div class="relative max-w-7xl mx-auto">
       <div class="text-center">
         <h2 class="text-3xl tracking-tight font-bold text-gray-900 sm:text-4xl sm:tracking-tight">
-          {{ headline }}
+          {{ headline }} News
         </h2>
         <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
           Here are the latest <span class="font-bold">{{ headline }}</span> news.
@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, toRefs } from 'vue';
 import { NewsEntry } from '@/types/news';
 
 export default defineComponent({
@@ -39,8 +39,13 @@ export default defineComponent({
       required: true,
     },
   },
-  async setup() {
-    const { data: articles } = await useFetch('/api/tags/bitcoin');
+  async setup(props) {
+    const { tag } = toRefs(props);
+    console.log(tag.value);
+
+    // TODO: slugify tags first
+
+    const { data: articles } = await useFetch(`/api/tags/${tag.value}`);
     const displayArticles = computed((): NewsEntry[] => articles.value.slice(0, 6));
 
     return {

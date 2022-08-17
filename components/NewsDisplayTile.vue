@@ -2,13 +2,22 @@
   <div
     class="flex flex-col rounded-lg shadow-lg overflow-hidden"
   >
-    <div class="flex-shrink-0">
+    <NuxtLink class="flex-shrink-0" :to="articleLink">
       <img
+        v-if="articleImage"
         class="h-48 w-full object-cover"
-        :src="article.s3_image_url"
-        alt=""
+        :src="articleImage"
+        :alt="article.title"
       >
-    </div>
+      <div
+        v-else
+        class="bg-indigo-600 text-white flex justify-center items-center h-48 w-full object-cover text-center p-4"
+      >
+        <h3 class="font-bold">
+          {{ article.title }}
+        </h3>
+      </div>
+    </NuxtLink>
     <div class="flex-1 bg-white p-6 flex flex-col justify-between">
       <div class="flex-1">
         <p class="text-sm font-medium text-indigo-600">
@@ -23,9 +32,9 @@
           :to="articleLink"
           class="block mt-2"
         >
-          <p class="text-xl font-semibold text-gray-900">
+          <h2 class="text-xl font-semibold text-gray-900">
             {{ article.title }}
-          </p>
+          </h2>
           <p class="mt-3 text-base text-gray-500">
             {{ articleDescription }}
           </p>
@@ -71,9 +80,21 @@ export default defineComponent({
     const categoryLink = computed(() => `/news/${tag.value}`);
     const publishTime = computed(() => moment(article.value.publish_timestamp).format('MMM DD, YYYY'));
     const articleDescription = computed(() => `${article.value.summary.slice(0, 150)}...`);
+    const articleImage = computed(() => {
+      console.log(article.value.s3_image_url);
+
+      if (article.value.s3_image_url && article.value.s3_image_url.includes('"')) {
+        return article.value.s3_image_url.replace(/"/g, '');
+      }
+      if (article.value.s3_image_url) {
+        return article.value.s3_image_url;
+      }
+      return null;
+    });
 
     return {
       articleDescription,
+      articleImage,
       articleLink,
       categoryLink,
       capitalizeFirstLetter,

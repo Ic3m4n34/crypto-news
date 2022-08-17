@@ -48,5 +48,6 @@ module.exports = {
     defineEventHandler: true,
     useFetch: true,
     useRoute: true,
+    useHead: true,
   },
 };

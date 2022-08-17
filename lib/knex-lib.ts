@@ -21,7 +21,39 @@ const getNewsById = async (knexClient: Knex, id: string): Promise<NewsEntry> => 
   }
 };
 
+const getAllTags = async (knexClient: Knex) => {
+  try {
+    const mappedTags = [];
+    const allTags = await knexClient.select('tags').from('news').where('language', 'english');
+    allTags.forEach((tagObject) => {
+      if (tagObject.tags.length > 0) {
+        tagObject.tags.forEach((tag) => mappedTags.push(tag));
+      }
+    });
+
+    // count occurrences of each tag
+    const tagCounts = mappedTags.reduce((acc, curr) => {
+      acc[curr] = (acc[curr] || 0) + 1;
+      return acc;
+    }, {});
+
+    const mostUsedTags = Object.keys(tagCounts).filter((tag) => tagCounts[tag] > 10);
+
+    const topTags = mostUsedTags.map((tag) => ({
+      name: tag,
+      count: tagCounts[tag],
+      tag: tag.toLowerCase(),
+    }));
+
+    return topTags;
+  } catch (error) {
+    console.error('Error in getAllTags: ', error);
+    return null;
+  }
+};
+
 export {
   getAllNews,
   getNewsById,
+  getAllTags,
 };
