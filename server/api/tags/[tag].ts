@@ -1,41 +1,36 @@
-import { getAllNews } from '../../../lib/knex-lib';
-import knexClient from '../../../lib/knex-client';
-import { cookNews } from '../../../lib/news';
+import { getAllNews } from '@/lib/knex-lib';
+import knexClient from '@/lib/knex-client';
+import { cookNews } from '@/lib/news';
+import { NewsEntry } from '@/types/news';
+import getOrSetCache from '@/lib/cache';
 
 export default defineEventHandler(async (event) => {
   const { tag } = event.context.params;
+  console.log('tag', tag);
 
-  console.log('yay', tag);
+  const allNews = await getOrSetCache('news:all', () => getAllNews(knexClient));
 
-  let allNews = null;
-  let cachedNews = null;
-
-  let filteredByTag = await useStorage().getItem(`news:tag::${tag}`);
+  let filteredByTag = await getOrSetCache(`news:tag::${tag}`, () => useStorage().setItem(`news:tag::${tag}`));
   if (filteredByTag) return filteredByTag;
 
-  const cache = await useStorage().getItem('news:all');
-  if (cache) {
-    cachedNews = cookNews(cache);
-  }
+  const cookedNews = cookNews(allNews); // adds readingTime property to each news entry
 
-  if (cache) {
-    allNews = cachedNews;
-  } else {
-    const fetchedNews = await getAllNews(knexClient);
-    allNews = cookNews(fetchedNews);
-  }
-
-  const cookedNews = allNews.map((news) => {
+  const mappedNews = cookedNews.map((news: NewsEntry) => { // tags to lowercase
     if (news.tags.length > 0) {
       return {
         ...news,
-        tags: news.tags.map((newsTag) => newsTag.toLowerCase()),
+        tags: news.tags.map((newsTag: string) => newsTag.toLowerCase()),
       };
     }
     return news;
   });
 
-  filteredByTag = cookedNews.filter((news) => news.tags.length > 0 && news.tags.includes(tag));
+  filteredByTag = mappedNews.filter((news) => news.tags.length > 0 && news.tags.includes(tag));
   await useStorage().setItem(`news:tag::${tag}`, cookNews(filteredByTag));
+  console.log('###################################');
+  console.log('###################################');
+  console.log(filteredByTag.length);
+  console.log('###################################');
+  console.log('###################################');
   return filteredByTag;
 });

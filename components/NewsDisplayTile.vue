@@ -81,8 +81,6 @@ export default defineComponent({
     const publishTime = computed(() => moment(article.value.publish_timestamp).format('MMM DD, YYYY'));
     const articleDescription = computed(() => `${article.value.summary.slice(0, 150)}...`);
     const articleImage = computed(() => {
-      console.log(article.value.s3_image_url);
-
       if (article.value.s3_image_url && article.value.s3_image_url.includes('"')) {
         return article.value.s3_image_url.replace(/"/g, '');
       }

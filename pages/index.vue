@@ -5,7 +5,7 @@
       v-for="tag in tags"
       :key="slugify(tag.tag)"
       :headline="tag.name"
-      :tag="tag.tag"
+      :tag="tag"
     />
   </div>
 </template>
