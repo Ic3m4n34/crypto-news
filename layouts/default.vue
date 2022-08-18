@@ -1,6 +1,6 @@
 <template>
   <div class="layout--default">
-    <NuxtLoadingIndicator height="10" />
+    <NuxtLoadingIndicator :height="10" />
     <MainNavigation />
     <main>
       <slot />
