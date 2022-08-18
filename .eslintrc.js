@@ -49,5 +49,6 @@ module.exports = {
     useFetch: true,
     useRoute: true,
     useHead: true,
+    $fetch: true,
   },
 };

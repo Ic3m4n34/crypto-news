@@ -27,10 +27,5 @@ export default defineEventHandler(async (event) => {
 
   filteredByTag = mappedNews.filter((news) => news.tags.length > 0 && news.tags.includes(tag));
   await useStorage().setItem(`news:tag::${tag}`, cookNews(filteredByTag));
-  console.log('###################################');
-  console.log('###################################');
-  console.log(filteredByTag.length);
-  console.log('###################################');
-  console.log('###################################');
   return filteredByTag;
 });

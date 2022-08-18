@@ -2,10 +2,11 @@
   <div class="index">
     <NewsHeader />
     <NewsSection
-      v-for="tag in tags"
-      :key="slugify(tag.tag)"
-      :headline="tag.name"
-      :tag="tag"
+      v-for="newsSection in homepageNews"
+      :key="slugify(newsSection.tag.tag)"
+      :headline="newsSection.tag.name"
+      :articles="newsSection.news"
+      :tag="newsSection.tag"
     />
   </div>
 </template>
@@ -16,7 +17,7 @@ import slugify from 'slugify';
 export default {
   name: 'IndexPage',
   async setup() {
-    const { data: tags } = await useFetch('/api/top-tags');
+    const { data: homepageNews } = await useFetch('/api/homepage');
 
     useHead({
       charset: 'utf-8',
@@ -27,7 +28,7 @@ export default {
     });
 
     return {
-      tags,
+      homepageNews,
       slugify,
     };
   },

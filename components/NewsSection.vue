@@ -14,7 +14,7 @@
       </div>
       <div class="mt-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-3 lg:max-w-none">
         <NewsDisplayTile
-          v-for="article in displayArticles"
+          v-for="article in articles"
           :key="article.id"
           :article="article"
           :tag="tag.tag"
@@ -26,48 +26,32 @@
 
 <script lang="ts">
 import {
-  defineComponent, computed, toRefs, PropType,
+  defineComponent, PropType,
 } from 'vue';
 import { NewsEntry } from '@/types/news';
 import { Tag } from '@/types/tags';
-import { v4 as uuidv4 } from 'uuid';
 
 export default defineComponent({
   props: {
+    articles: {
+      type: Array as PropType<NewsEntry[]>,
+      required: true,
+    },
+    headline: {
+      type: String as PropType<string>,
+      required: true,
+    },
     tag: {
       type: Object as PropType<Tag>,
       required: true,
     },
-    headline: {
-      type: String,
-      required: true,
-    },
   },
-  async setup(props) {
-    const { tag } = toRefs(props);
-
-    const fetchArticles = async () => {
-      try {
-        const { data: articles } = await useFetch(`/api/tags/${tag.value.tag}`);
-
-        return articles.value;
-      } catch (error) {
-        console.error(`Error fetching news with ${tag.value.tag}`, error);
-        return [];
-      }
-    };
-
-    const articles = await fetchArticles();
-
-    const displayArticles = computed((): NewsEntry[] => {
-      if (articles && articles.length > 0) return articles.slice(0, 6);
-      return [];
-    });
+  /* async setup(props) {
+    const { articles } = toRefs(props);
 
     return {
-      displayArticles,
-      uuidv4,
+      articles,
     };
-  },
+  }, */
 });
 </script>
