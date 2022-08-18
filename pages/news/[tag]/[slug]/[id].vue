@@ -88,9 +88,9 @@
           />
           <div
             v-else
-            class="bg-indigo-600 text-white flex justify-center items-center h-48 w-full object-cover text-center p-4"
+            class="bg-indigo-600 text-white flex justify-center items-center aspect-square w-full object-cover text-center p-4"
           >
-            <h3 class="font-bold">
+            <h3 class="font-bold text-3xl md:text-5xl">
               {{ headline }}
             </h3>
           </div>

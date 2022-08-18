@@ -1,21 +1,16 @@
 <template>
   <div class="layout--default">
+    <NuxtLoadingIndicator height="10" />
     <MainNavigation />
     <main>
       <slot />
     </main>
+    <PageFooter />
   </div>
 </template>
 
 <script>
 export default {
   name: 'LayoutDefault',
-  /* setup() {
-    const nuxtApp = useNuxtApp();
-
-    nuxtApp.hook('page:finish', () => {
-      window.scrollTo(0, 0);
-    });
-  }, */
 };
 </script>
