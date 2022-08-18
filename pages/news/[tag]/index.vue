@@ -24,33 +24,24 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { capitalizeFirstLetter } from '@/lib/helpers';
-import { defineComponent, computed } from 'vue';
+import { computed } from 'vue';
+import { NewsEntry } from '@/types/news';
 
-export default defineComponent({
-  name: 'TagOverviewPage',
-  async setup() {
-    const route = useRoute();
-    const { tag } = route.params;
-    const { data: articles } = await useFetch(`/api/tags/${tag}`);
+const route = useRoute();
+const { tag } = route.params;
+const { data: articles } = await useAsyncData(`${tag}-details`, () => $fetch<NewsEntry>(`/api/tags/${tag}`));
 
-    const capitalizedTag = computed(() => capitalizeFirstLetter(tag));
+const capitalizedTag = computed(() => capitalizeFirstLetter(tag));
 
-    useHead({
-      title: `${capitalizeFirstLetter(tag)} - All News`,
-      charset: 'utf-8',
-      lang: 'en',
-      meta: [
-        { name: 'description', content: `We've curated ${capitalizedTag.value} News from every Crypto News Source. Read all the latest Ethereum News!` },
-      ],
-    });
-
-    return {
-      articles,
-      tag,
-      capitalizedTag,
-    };
-  },
+useHead({
+  title: `${capitalizedTag.value} - All News`,
+  charset: 'utf-8',
+  lang: 'en',
+  meta: [
+    { name: 'description', content: `We've curated ${capitalizedTag.value} News from every Crypto News Source. Read all the latest Ethereum News!` },
+  ],
 });
+
 </script>
