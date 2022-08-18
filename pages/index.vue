@@ -1,8 +1,8 @@
 <template>
   <div class="index">
-    <NewsHeader />
+    <NewsHeader :newest-article="homepageNews.newestArticle" />
     <NewsSection
-      v-for="newsSection in homepageNews"
+      v-for="newsSection in homepageNews.news"
       :key="slugify(newsSection.tag.slug)"
       :headline="newsSection.tag.name"
       :articles="newsSection.news"
@@ -14,6 +14,12 @@
 
       <template #description>
         Here are the latest <span class="font-bold">{{ newsSection.tag.name }}</span> news.
+      </template>
+
+      <template #call-to-action>
+        <NuxtLink :to="`/news/${newsSection.tag.slug}`" class="text-indigo-600 text-xl">
+          For more <span class="font-bold">{{ newsSection.tag.name }}</span> News, click here!
+        </NuxtLink>
       </template>
     </NewsSection>
   </div>

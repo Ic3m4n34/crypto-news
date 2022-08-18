@@ -35,5 +35,11 @@ export default defineEventHandler(async () => {
     return newsFilteredByTag;
   });
 
-  return homepageNews;
+  const newestArticle = allNews.slice(0, 1)[0];
+  const frontpageNews = {
+    newestArticle,
+    news: homepageNews,
+  };
+
+  return frontpageNews;
 });

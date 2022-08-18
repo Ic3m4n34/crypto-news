@@ -1,5 +1,6 @@
 <template>
   <div class="layout--default">
+    <MainNavigation />
     <main>
       <slot />
     </main>
