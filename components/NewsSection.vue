@@ -20,6 +20,11 @@
           :tag="tag.tag"
         />
       </div>
+      <div class="text-center mt-12">
+        <NuxtLink :to="`/news/${tag.tag}`" class="text-indigo-600 text-xl">
+          For more <span class="font-bold">{{ tag.name }}</span> News, click here!
+        </NuxtLink>
+      </div>
     </div>
   </div>
 </template>

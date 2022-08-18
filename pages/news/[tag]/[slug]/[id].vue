@@ -92,6 +92,7 @@ import { defineComponent, computed } from 'vue';
 
 export default defineComponent({
   name: 'NewsDetailPage',
+  scrollToTop: true,
   async setup() {
     const route = useRoute();
     const { id, tag } = route.params;
