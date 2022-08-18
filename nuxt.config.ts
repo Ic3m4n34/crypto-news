@@ -8,10 +8,22 @@ export default defineNuxtConfig({
         lang: 'en',
       },
       title: 'Crypto News',
+      meta: [
+        { name: 'description', content: 'We\'ve curated all News from every Crypto News Source. Read all the latest Crypto News now!' },
+      ],
+    },
+  },
+  router: {
+    // https://router.vuejs.org/api/interfaces/routeroptions.html
+    options: {
+      scrollBehavior: (to, from, savedPosition) => ({ x: 0, y: 0 }),
     },
   },
   css: [
     '@/assets/css/main.css',
+  ],
+  modules: [
+    '@nuxt/image-edge',
   ],
   nitro: {
     storage: {

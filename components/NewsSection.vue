@@ -6,10 +6,10 @@
     <div class="relative max-w-7xl mx-auto">
       <div class="text-center">
         <h2 class="text-3xl tracking-tight font-bold text-gray-900 sm:text-4xl sm:tracking-tight">
-          {{ headline }} News
+          <slot name="headline" />
         </h2>
         <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
-          Here are the latest <span class="font-bold">{{ headline }}</span> news.
+          <slot name="description" />
         </p>
       </div>
       <div class="mt-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-3 lg:max-w-none">
@@ -17,13 +17,11 @@
           v-for="article in articles"
           :key="article.id"
           :article="article"
-          :tag="tag.tag"
+          :tag="tag"
         />
       </div>
       <div class="text-center mt-12">
-        <NuxtLink :to="`/news/${tag.tag}`" class="text-indigo-600 text-xl">
-          For more <span class="font-bold">{{ tag.name }}</span> News, click here!
-        </NuxtLink>
+        <slot name="call-to-action" />
       </div>
     </div>
   </div>
@@ -34,7 +32,6 @@ import {
   defineComponent, PropType,
 } from 'vue';
 import { NewsEntry } from '@/types/news';
-import { Tag } from '@/types/tags';
 
 export default defineComponent({
   props: {
@@ -42,21 +39,10 @@ export default defineComponent({
       type: Array as PropType<NewsEntry[]>,
       required: true,
     },
-    headline: {
+    tag: {
       type: String as PropType<string>,
       required: true,
     },
-    tag: {
-      type: Object as PropType<Tag>,
-      required: true,
-    },
   },
-  /* async setup(props) {
-    const { articles } = toRefs(props);
-
-    return {
-      articles,
-    };
-  }, */
 });
 </script>

@@ -80,8 +80,43 @@
             {{ headline }}
           </span>
         </h1>
+        <div class="rounded-lg overflow-hidden my-8">
+          <nuxt-img
+            v-if="articleImage"
+            :src="articleImage"
+            :alt="headline"
+          />
+          <div
+            v-else
+            class="bg-indigo-600 text-white flex justify-center items-center h-48 w-full object-cover text-center p-4"
+          >
+            <h3 class="font-bold">
+              {{ headline }}
+            </h3>
+          </div>
+        </div>
       </div>
       <div class="mt-6 prose prose-indigo prose-lg text-gray-500 mx-auto" v-html="htmlContent" />
+    </div>
+    <div>
+      <NewsSection
+        :articles="moreNews"
+        :tag="tag"
+      >
+        <template #headline>
+          {{ capitalizeFirstLetter(tag) }} News
+        </template>
+
+        <template #description>
+          Here are the latest <span class="font-bold">{{ capitalizeFirstLetter(tag) }}</span> news.
+        </template>
+
+        <template #call-to-action>
+          <NuxtLink :to="`/news/${tag}`" class="text-indigo-600 text-xl">
+            For more <span class="font-bold">{{ capitalizeFirstLetter(tag) }}</span> News, click here!
+          </NuxtLink>
+        </template>
+      </NewsSection>
     </div>
   </div>
 </template>
@@ -97,14 +132,38 @@ export default defineComponent({
     const route = useRoute();
     const { id, tag } = route.params;
     const { data: article } = await useFetch(`/api/id/${id}`);
+    const { data: moreNewsByTag } = await useFetch(`/api/tags/${tag}`);
+
+    const moreNews = computed(() => moreNewsByTag.value.slice(0, 6));
 
     const headline = computed(() => article.value.title);
     const summary = computed(() => article.value.summary);
     const htmlContent = computed(() => article.value.html_content.replace(/\n/g, ''));
 
+    const articleImage = computed(() => {
+      if (article.value.s3_image_url && article.value.s3_image_url.includes('"')) {
+        return article.value.s3_image_url.replace(/"/g, '');
+      }
+      if (article.value.s3_image_url) {
+        return article.value.s3_image_url;
+      }
+      return null;
+    });
+
+    useHead({
+      title: `${headline.value} - Crypto News`,
+      charset: 'utf-8',
+      lang: 'en',
+      meta: [
+        { name: 'description', content: summary.value },
+      ],
+    });
+
     return {
+      articleImage,
       headline,
       htmlContent,
+      moreNews,
       summary,
       tag,
       capitalizeFirstLetter,

@@ -6,7 +6,6 @@ import getOrSetCache from '@/lib/cache';
 
 export default defineEventHandler(async (event) => {
   const { tag } = event.context.params;
-  console.log('tag', tag);
 
   const allNews = await getOrSetCache('news:all', () => getAllNews(knexClient));
 

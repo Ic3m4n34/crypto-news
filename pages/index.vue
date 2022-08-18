@@ -7,7 +7,15 @@
       :headline="newsSection.tag.name"
       :articles="newsSection.news"
       :tag="newsSection.tag"
-    />
+    >
+      <template #headline>
+        {{ newsSection.tag.name }} News
+      </template>
+
+      <template #description>
+        Here are the latest <span class="font-bold">{{ newsSection.tag.name }}</span> news.
+      </template>
+    </NewsSection>
   </div>
 </template>
 
@@ -18,14 +26,6 @@ export default {
   name: 'IndexPage',
   async setup() {
     const { data: homepageNews } = await useFetch('/api/homepage');
-
-    useHead({
-      charset: 'utf-8',
-      lang: 'en',
-      meta: [
-        { name: 'description', content: 'We\'ve curated all News from every Crypto News Source. Read all the latest Crypto News now!' },
-      ],
-    });
 
     return {
       homepageNews,
