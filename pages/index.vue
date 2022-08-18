@@ -3,10 +3,10 @@
     <NewsHeader />
     <NewsSection
       v-for="newsSection in homepageNews"
-      :key="slugify(newsSection.tag.tag)"
+      :key="slugify(newsSection.tag.slug)"
       :headline="newsSection.tag.name"
       :articles="newsSection.news"
-      :tag="newsSection.tag"
+      :tag="newsSection.tag.slug"
     >
       <template #headline>
         {{ newsSection.tag.name }} News

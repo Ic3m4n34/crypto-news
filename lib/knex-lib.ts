@@ -42,7 +42,7 @@ const getAllTags = async (knexClient: Knex) => {
     const topTags = mostUsedTags.map((tag) => ({
       name: tag,
       count: tagCounts[tag],
-      tag: tag.toLowerCase(),
+      slug: tag.toLowerCase(),
     }));
 
     return topTags;

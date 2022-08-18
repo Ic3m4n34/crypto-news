@@ -6,10 +6,10 @@
     <div class="relative max-w-7xl mx-auto">
       <div class="text-center">
         <h1 class="text-3xl tracking-tight font-bold text-gray-900 sm:text-4xl sm:tracking-tight">
-          {{ capitalizeFirstLetter(tag) }} News
+          {{ capitalizedTag }} News
         </h1>
         <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
-          Here are the latest <span class="font-bold">{{ capitalizeFirstLetter(tag) }}</span> news.
+          Here are the latest <span class="font-bold">{{ capitalizedTag }}</span> news.
         </p>
       </div>
       <div class="mt-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-3 lg:max-w-none">
@@ -17,7 +17,7 @@
           v-for="article in articles"
           :key="article.title"
           :article="article"
-          :tag="'bitcoin'"
+          :tag="tag"
         />
       </div>
     </div>
@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import { capitalizeFirstLetter } from '@/lib/helpers';
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 
 export default defineComponent({
   name: 'TagOverviewPage',
@@ -35,19 +35,21 @@ export default defineComponent({
     const { tag } = route.params;
     const { data: articles } = await useFetch(`/api/tags/${tag}`);
 
+    const capitalizedTag = computed(() => capitalizeFirstLetter(tag));
+
     useHead({
       title: `${capitalizeFirstLetter(tag)} - All News`,
       charset: 'utf-8',
       lang: 'en',
       meta: [
-        { name: 'description', content: `We've curated ${capitalizeFirstLetter(tag)} News from every Crypto News Source. Read all the latest Ethereum News!` },
+        { name: 'description', content: `We've curated ${capitalizedTag.value} News from every Crypto News Source. Read all the latest Ethereum News!` },
       ],
     });
 
     return {
       articles,
       tag,
-      capitalizeFirstLetter,
+      capitalizedTag,
     };
   },
 });

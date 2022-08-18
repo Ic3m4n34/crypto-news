@@ -73,9 +73,9 @@
     <div class="relative px-4 sm:px-6 lg:px-8">
       <div class="text-lg max-w-prose mx-auto">
         <h1>
-          <span class="block text-lg text-center text-indigo-600 font-semibold">
-            {{ capitalizeFirstLetter(tag) }}
-          </span>
+          <NuxtLink class="block text-lg text-center text-indigo-600 font-semibold" :to="`/news/${tag}`">
+            {{ capitalizedTag }}
+          </NuxtLink>
           <span class="mt-2 block text-3xl text-center leading-8 font-bold tracking-tight text-gray-900 sm:text-4xl sm:tracking-tight">
             {{ headline }}
           </span>
@@ -104,16 +104,16 @@
         :tag="tag"
       >
         <template #headline>
-          {{ capitalizeFirstLetter(tag) }} News
+          {{ capitalizedTag }} News
         </template>
 
         <template #description>
-          Here are the latest <span class="font-bold">{{ capitalizeFirstLetter(tag) }}</span> news.
+          Here are the latest <span class="font-bold">{{ capitalizedTag }}</span> news.
         </template>
 
         <template #call-to-action>
           <NuxtLink :to="`/news/${tag}`" class="text-indigo-600 text-xl">
-            For more <span class="font-bold">{{ capitalizeFirstLetter(tag) }}</span> News, click here!
+            For more <span class="font-bold">{{ capitalizedTag }}</span> News, click here!
           </NuxtLink>
         </template>
       </NewsSection>
@@ -121,53 +121,41 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { capitalizeFirstLetter } from '@/lib/helpers';
-import { defineComponent, computed } from 'vue';
+import { computed } from 'vue';
+import { NewsEntry } from '@/types/news';
 
-export default defineComponent({
-  name: 'NewsDetailPage',
-  scrollToTop: true,
-  async setup() {
-    const route = useRoute();
-    const { id, tag } = route.params;
-    const { data: article } = await useFetch(`/api/id/${id}`);
-    const { data: moreNewsByTag } = await useFetch(`/api/tags/${tag}`);
+const route = useRoute();
+const { id, tag } = route.params;
 
-    const moreNews = computed(() => moreNewsByTag.value.slice(0, 6));
+const { data: article } = await useAsyncData(`${id}-details`, () => $fetch<NewsEntry>(`/api/id/${id}`));
+const { data: moreNews } = await useAsyncData(`${id}-more-news`, () => $fetch<NewsEntry[]>(`/api/tags/${tag}?limit=6`));
 
-    const headline = computed(() => article.value.title);
-    const summary = computed(() => article.value.summary);
-    const htmlContent = computed(() => article.value.html_content.replace(/\n/g, ''));
+const headline = computed(() => article.value.title);
 
-    const articleImage = computed(() => {
-      if (article.value.s3_image_url && article.value.s3_image_url.includes('"')) {
-        return article.value.s3_image_url.replace(/"/g, '');
-      }
-      if (article.value.s3_image_url) {
-        return article.value.s3_image_url;
-      }
-      return null;
-    });
+const summary = computed(() => article.value.summary);
+const htmlContent = computed(() => article.value.html_content.replace(/\n/g, ''));
 
-    useHead({
-      title: `${headline.value} - Crypto News`,
-      charset: 'utf-8',
-      lang: 'en',
-      meta: [
-        { name: 'description', content: summary.value },
-      ],
-    });
-
-    return {
-      articleImage,
-      headline,
-      htmlContent,
-      moreNews,
-      summary,
-      tag,
-      capitalizeFirstLetter,
-    };
-  },
+const articleImage = computed(() => {
+  if (article.value.s3_image_url && article.value.s3_image_url.includes('"')) {
+    return article.value.s3_image_url.replace(/"/g, '');
+  }
+  if (article.value.s3_image_url) {
+    return article.value.s3_image_url;
+  }
+  return null;
 });
+
+const capitalizedTag = computed(() => capitalizeFirstLetter(tag));
+
+useHead({
+  title: `${headline.value} - Crypto News`,
+  charset: 'utf-8',
+  lang: 'en',
+  meta: [
+    { name: 'description', content: summary.value },
+  ],
+});
+
 </script>

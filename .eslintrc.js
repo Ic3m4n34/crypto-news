@@ -50,5 +50,6 @@ module.exports = {
     useRoute: true,
     useHead: true,
     $fetch: true,
+    useAsyncData: true,
   },
 };

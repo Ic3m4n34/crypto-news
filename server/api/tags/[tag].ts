@@ -6,10 +6,13 @@ import getOrSetCache from '@/lib/cache';
 
 export default defineEventHandler(async (event) => {
   const { tag } = event.context.params;
+  const { limit } = useQuery(event);
+
+  const articleLimit = +limit || 'no-limit';
 
   const allNews = await getOrSetCache('news:all', () => getAllNews(knexClient));
 
-  let filteredByTag = await getOrSetCache(`news:tag::${tag}`, () => useStorage().setItem(`news:tag::${tag}`));
+  let filteredByTag = await getOrSetCache(`news:tag::${tag}::limit:${articleLimit}`, () => useStorage().setItem(`news:tag::${tag}`));
   if (filteredByTag) return filteredByTag;
 
   const cookedNews = cookNews(allNews); // adds readingTime property to each news entry
@@ -25,6 +28,12 @@ export default defineEventHandler(async (event) => {
   });
 
   filteredByTag = mappedNews.filter((news) => news.tags.length > 0 && news.tags.includes(tag));
-  await useStorage().setItem(`news:tag::${tag}`, cookNews(filteredByTag));
+
+  if (articleLimit === 'no-limit') {
+    await useStorage().setItem(`news:tag::${tag}::limit:${articleLimit}`, cookNews(filteredByTag));
+    return filteredByTag;
+  }
+
+  await useStorage().setItem(`news:tag::${tag}::limit:${articleLimit}`, cookNews(filteredByTag.slice(0, articleLimit)));
   return filteredByTag;
 });

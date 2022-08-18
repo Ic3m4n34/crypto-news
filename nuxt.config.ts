@@ -13,12 +13,6 @@ export default defineNuxtConfig({
       ],
     },
   },
-  router: {
-    // https://router.vuejs.org/api/interfaces/routeroptions.html
-    options: {
-      scrollBehavior: (to, from, savedPosition) => ({ x: 0, y: 0 }),
-    },
-  },
   css: [
     '@/assets/css/main.css',
   ],

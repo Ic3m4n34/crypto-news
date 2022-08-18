@@ -25,7 +25,7 @@
             :to="categoryLink"
             class="hover:underline"
           >
-            {{ capitalizeFirstLetter(tag) }}
+            {{ capitalizedTag }}
           </NuxtLink>
         </p>
         <NuxtLink
@@ -90,12 +90,17 @@ export default defineComponent({
       return null;
     });
 
+    const capitalizedTag = computed(() => {
+      if (!tag.value) return '';
+      return capitalizeFirstLetter(tag.value);
+    });
+
     return {
       articleDescription,
       articleImage,
       articleLink,
       categoryLink,
-      capitalizeFirstLetter,
+      capitalizedTag,
       publishTime,
     };
   },

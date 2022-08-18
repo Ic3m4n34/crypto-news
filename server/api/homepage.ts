@@ -2,6 +2,7 @@ import { getAllNews } from '@/lib/knex-lib';
 import knexClient from '@/lib/knex-client';
 import { cookNews } from '@/lib/news';
 import { NewsEntry } from '@/types/news';
+import { Tag } from '@/types/tags';
 import getOrSetCache from '@/lib/cache';
 
 export default defineEventHandler(async () => {
@@ -22,8 +23,8 @@ export default defineEventHandler(async () => {
       return news;
     });
 
-    const newsFilteredByTag = topTags.map((tag) => {
-      const newsWithTag = mappedNews.filter((news: NewsEntry) => news.tags.includes(tag.tag));
+    const newsFilteredByTag = topTags.map((tag: Tag) => {
+      const newsWithTag = mappedNews.filter((news: NewsEntry) => news.tags.includes(tag.slug));
       return {
         tag,
         count: newsWithTag.length,
