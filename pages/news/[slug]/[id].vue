@@ -73,7 +73,11 @@
     <div class="relative px-4 sm:px-6 lg:px-8">
       <div class="text-lg max-w-prose mx-auto">
         <h1>
-          <NuxtLink class="block text-lg text-center text-indigo-600 font-semibold" :to="`/news/${tag}`">
+          <NuxtLink
+            v-if="capitalizedTag"
+            class="block text-lg text-center text-indigo-600 font-semibold"
+            :to="`/news/${tag}`"
+          >
             {{ capitalizedTag }}
           </NuxtLink>
           <span class="mt-2 block text-3xl text-center leading-8 font-bold tracking-tight text-gray-900 sm:text-4xl sm:tracking-tight">
@@ -98,10 +102,12 @@
       </div>
       <div class="mt-6 prose prose-indigo prose-lg text-gray-500 mx-auto" v-html="htmlContent" />
     </div>
-    <div>
+    <div
+      v-if="articleTags.length > 0"
+    >
       <NewsSection
         :articles="moreNews"
-        :tag="tag"
+        :tag="articleTags[0].toLowerCase()"
       >
         <template #headline>
           {{ capitalizedTag }} News
@@ -112,7 +118,7 @@
         </template>
 
         <template #call-to-action>
-          <NuxtLink :to="`/news/${tag}`" class="text-indigo-600 text-xl">
+          <NuxtLink :to="`/news/tag/${tag}`" class="text-indigo-600 text-xl">
             For more <span class="font-bold">{{ capitalizedTag }}</span> News, click here!
           </NuxtLink>
         </template>
@@ -127,10 +133,16 @@ import { computed } from 'vue';
 import { NewsEntry } from '@/types/news';
 
 const route = useRoute();
-const { id, tag } = route.params;
+const { id } = route.params;
 
 const { data: article } = await useAsyncData(`${id}-details`, () => $fetch<NewsEntry>(`/api/id/${id}`));
-const { data: moreNews } = await useAsyncData(`${id}-more-news`, () => $fetch<NewsEntry[]>(`/api/tags/${tag}?limit=6`));
+
+const articleTags = computed(() => {
+  if (!article.value.tags) return [];
+  return article.value.tags;
+});
+
+const { data: moreNews } = await useAsyncData(`${id}-more-news`, () => $fetch<NewsEntry[]>(`/api/tags/${articleTags.value[0].toLowerCase()}?limit=6`));
 
 const headline = computed(() => article.value.title);
 
@@ -147,10 +159,13 @@ const articleImage = computed(() => {
   return null;
 });
 
-const capitalizedTag = computed(() => capitalizeFirstLetter(tag));
+const capitalizedTag = computed(() => {
+  if (articleTags.value.length === 0) return null;
+  return capitalizeFirstLetter(articleTags.value[0]);
+});
 
 useHead({
-  title: `${headline.value} - Crypto News`,
+  title: `${headline.value} | Encrypteer.com`,
   charset: 'utf-8',
   lang: 'en',
   meta: [

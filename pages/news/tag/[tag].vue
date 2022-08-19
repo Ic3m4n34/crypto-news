@@ -31,12 +31,20 @@ import { NewsEntry } from '@/types/news';
 
 const route = useRoute();
 const { tag } = route.params;
-const { data: articles } = await useAsyncData(`${tag}-details`, () => $fetch<NewsEntry>(`/api/tags/${tag}`));
+let unsluggedTag;
+
+if (typeof tag !== 'string') {
+  throw new TypeError('Tag must be a string');
+} else {
+  unsluggedTag = tag.replace(/-/g, ' ');
+}
+
+const { data: articles } = await useAsyncData(`${tag}-details`, () => $fetch<NewsEntry>(`/api/tags/${unsluggedTag}`));
 
 const capitalizedTag = computed(() => capitalizeFirstLetter(tag));
 
 useHead({
-  title: `${capitalizedTag.value} - All News`,
+  title: `${capitalizedTag.value} | Encrypteer.com`,
   charset: 'utf-8',
   lang: 'en',
   meta: [

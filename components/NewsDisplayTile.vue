@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import slugify from 'slugify';
+import slugify from '@/helpers/slugify';
 import { defineComponent, computed, toRefs } from 'vue';
 import { capitalizeFirstLetter } from '@/lib/helpers';
 import moment from 'moment';
@@ -70,15 +70,25 @@ export default defineComponent({
     },
     tag: {
       type: String,
-      required: true,
+      default: '',
     },
   },
   setup(props) {
     const { article, tag } = toRefs(props);
 
-    const articleLink = computed(() => `/news/${tag.value}/${slugify(article.value.title.toLowerCase())}/${article.value.id}`);
-    const categoryLink = computed(() => `/news/${tag.value}`);
-    const publishTime = computed(() => moment(article.value.publish_timestamp).format('MMM DD, YYYY'));
+    const articleTags = computed(() => {
+      if (!article.value.tags) return [];
+      return article.value.tags;
+    });
+
+    const firstArticleTag = computed(() => {
+      if (!articleTags.value.length) return null;
+      return articleTags.value[0];
+    });
+
+    const articleLink = computed(() => `/news/${slugify(article.value.title)}/${article.value.id}`);
+    const categoryLink = computed(() => `/news/tag/${tag.value}` || `/news/tag/${firstArticleTag.value}`);
+    const publishTime = computed(() => moment(article.value.publish_timestamp).format('MMM DD, YYYY h:mm a'));
     const articleDescription = computed(() => `${article.value.summary.slice(0, 150)}...`);
     const articleImage = computed(() => {
       if (article.value.s3_image_url && article.value.s3_image_url.includes('"')) {
@@ -91,8 +101,11 @@ export default defineComponent({
     });
 
     const capitalizedTag = computed(() => {
-      if (!tag.value) return '';
-      return capitalizeFirstLetter(tag.value);
+      if (tag.value) {
+        return capitalizeFirstLetter(tag.value.replace(/-/g, ' '));
+      }
+      if (!firstArticleTag.value) return '';
+      return capitalizeFirstLetter(firstArticleTag.value);
     });
 
     return {

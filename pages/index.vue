@@ -17,7 +17,7 @@
       </template>
 
       <template #call-to-action>
-        <NuxtLink :to="`/news/${newsSection.tag.slug}`" class="text-indigo-600 text-xl">
+        <NuxtLink :to="`/news/tag/${newsSection.tag.slug}`" class="text-indigo-600 text-xl">
           For more <span class="font-bold">{{ newsSection.tag.name }}</span> News, click here!
         </NuxtLink>
       </template>
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import slugify from 'slugify';
+import slugify from '@/helpers/slugify';
 
 export default {
   name: 'IndexPage',

@@ -4,6 +4,7 @@ import { cookNews } from '@/lib/news';
 import { NewsEntry } from '@/types/news';
 import { Tag } from '@/types/tags';
 import getOrSetCache from '@/lib/cache';
+// import { deSlugify } from '@/helpers/slugify';
 
 export default defineEventHandler(async () => {
   const topTags = await $fetch('/api/top-tags');
@@ -24,7 +25,7 @@ export default defineEventHandler(async () => {
     });
 
     const newsFilteredByTag = topTags.map((tag: Tag) => {
-      const newsWithTag = mappedNews.filter((news: NewsEntry) => news.tags.includes(tag.slug));
+      const newsWithTag = mappedNews.filter((news: NewsEntry) => news.tags.includes(tag.slug.replace(/-/g, ' ')));
       return {
         tag,
         count: newsWithTag.length,

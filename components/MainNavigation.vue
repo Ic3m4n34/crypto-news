@@ -92,10 +92,10 @@ import { MenuIcon, XIcon } from '@heroicons/vue/outline';
 
 const navigation = [
   { name: 'Home', to: '/' },
-  { name: 'Bitcoin', to: '/news/bitcoin' },
-  { name: 'Ethereum', to: '/news/ethereum' },
-  { name: 'Altcoin', to: '/news/altcoin' },
-  { name: 'NFT', to: '/news/nft' },
+  { name: 'Bitcoin', to: '/news/tag/bitcoin' },
+  { name: 'Ethereum', to: '/news/tag/ethereum' },
+  { name: 'Altcoin', to: '/news/tag/altcoin' },
+  { name: 'NFT', to: '/news/tag/nft' },
 ];
 </script>
 

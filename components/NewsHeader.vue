@@ -62,6 +62,9 @@
             <p class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
               {{ trimmedSummary }}
             </p>
+            <p class="mt-3 block text-base font-semibold text-indigo-700 sm:text-lg lg:text-base xl:text-lg">
+              Read More!
+            </p>
           </NuxtLink>
           <div class="mt-12 relative sm:max-w-lg sm:mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-span-6 lg:flex lg:items-center">
             <svg
@@ -146,7 +149,7 @@
 </template>
 
 <script setup lang="ts">
-import slugify from 'slugify';
+import slugify from '@/helpers/slugify';
 import { PropType, toRefs, computed } from 'vue';
 import { NewsEntry } from '@/types/news';
 
@@ -183,15 +186,8 @@ const headlineCssClass = computed(() => {
   return 'text-4xl sm:text-5xl xl:text-6xl';
 });
 
-const tag = computed(() => {
-  if (newestArticle.value.tags.length > 0) {
-    return newestArticle.value.tags[0].toLowerCase();
-  }
-  return 'bitcoin';
-});
-
 const slug = computed(() => slugify(newestArticle.value.title));
 
-const link = computed(() => `/news/${tag.value}/${slug.value}/${newestArticle.value.id}`);
+const link = computed(() => `/news/${slug.value}/${newestArticle.value.id}`);
 
 </script>

@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import {
-  defineComponent, PropType,
+  defineComponent, PropType, toRefs,
 } from 'vue';
 import { NewsEntry } from '@/types/news';
 
@@ -41,7 +41,7 @@ export default defineComponent({
     },
     tag: {
       type: String as PropType<string>,
-      required: true,
+      default: '',
     },
   },
 });

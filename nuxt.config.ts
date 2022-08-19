@@ -1,5 +1,5 @@
 import { defineNuxtConfig } from 'nuxt';
-import getRoutes from './helpers/sitemap';
+import 'dotenv/config';
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
@@ -8,7 +8,7 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'en',
       },
-      title: 'Crypto News',
+      title: 'Encrypteer.com',
       meta: [
         { name: 'description', content: 'We\'ve curated all News from every Crypto News Source. Read all the latest Crypto News now!' },
       ],
@@ -19,23 +19,22 @@ export default defineNuxtConfig({
   ],
   modules: [
     '@nuxt/image-edge',
-    '@nuxtjs/sitemap',
+    '@funken-studio/sitemap-nuxt-3',
   ],
   sitemap: {
     hostname: 'https://encrypteer.com',
     gzip: true,
-    routes: getRoutes(),
+    routes: async () => $fetch('/api/sitemap'),
   },
   nitro: {
     storage: {
       redis: {
         driver: 'redis',
-        /* redis connector options */
-        port: 6379, // Redis port
-        host: '127.0.0.1', // Redis host
-        username: '', // needs Redis >= 6
-        password: '',
-        db: 0, // Defaults to 0
+        port: process.env.REDIS_PORT || 6379,
+        host: process.env.REDIS_HOST || '127.0.0.1',
+        username: '',
+        password: process.env.REDIS_PASSWORD || '',
+        db: 0,
       },
     },
   },
