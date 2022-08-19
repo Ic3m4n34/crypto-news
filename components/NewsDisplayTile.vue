@@ -20,7 +20,10 @@
     </NuxtLink>
     <div class="flex-1 bg-white p-6 flex flex-col justify-between">
       <div class="flex-1">
-        <p class="text-sm font-medium text-indigo-600">
+        <p
+          v-if="capitalizedTag.length > 0"
+          class="text-sm font-medium text-indigo-600"
+        >
           <NuxtLink
             :to="categoryLink"
             class="hover:underline"

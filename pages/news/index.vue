@@ -11,26 +11,90 @@
       </div>
       <div class="mt-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-3 lg:max-w-none">
         <NewsDisplayTile
-          v-for="article in articles"
+          v-for="article in allNews.news"
           :key="article.title"
           :article="article"
         />
       </div>
     </div>
-    <NewsSection :articles="articles" />
+    <div class="flex justify-center py-20">
+      <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+        <NuxtLink :to="`/news?page=${page - 1}`" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 text-sm font-medium text-gray-500 hover:bg-gray-50">
+          <span class="sr-only">Previous</span>
+          <ChevronLeftIcon class="h-5 w-5" aria-hidden="true" />
+        </NuxtLink>
+        <NuxtLink
+          v-for="paginationPage in paginationPages"
+          :key="`page-${paginationPage}`"
+          :to="`/news?page=${paginationPage}`"
+          :class="getActiveClass(paginationPage)"
+        >
+          {{ paginationPage }}
+        </NuxtLink>
+        <NuxtLink :to="`/news?page=${page + 1}`" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+          <span class="sr-only">Next</span>
+          <ChevronRightIcon class="h-5 w-5" aria-hidden="true" />
+        </NuxtLink>
+      </nav>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { NewsEntry } from '@/types/news';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/solid';
+import { computed, ref, watch } from 'vue';
+import { AllNewsType } from '@/types/news';
 
 const route = useRoute();
 const { query } = route;
 const { page } = query;
+// TODO: use ref instead of computed
+const offset = computed(() => (page ? (+page - 1) * 100 : 0));
 
-const offset = (+page - 1) * 100;
+const { data: allNews, refresh } = useAsyncData('all-news', () => $fetch<AllNewsType>(`/api/news?limit=100&offset=${offset.value}`));
 
-const { data: articles } = useAsyncData('all-news', () => $fetch<NewsEntry[]>(`/api/news?limit=100&offset=${offset}`));
+watch(() => route.query, () => {
+  const { query } = route;
+  const { page } = query;
+
+  const offset = computed(() => (page ? (+page - 1) * 100 : 0));
+
+  refresh();
+});
+
+console.log('###################################');
+console.log('###################################');
+console.log(allNews.value);
+console.log('###################################');
+console.log('###################################');
+
+const articleCount = computed(() => {
+  if (!allNews) {
+    return 0;
+  }
+  return allNews.value.articleCount;
+});
+
+const paginationPages = computed(() => {
+  if (!articleCount.value) {
+    return [];
+  }
+  const pages = Math.ceil(articleCount.value / 100);
+
+  return Array.from(Array(pages).keys()).map((i) => i + 1);
+});
+
+const getActiveClass = (activePage: number) => {
+  if (activePage === +page) {
+    return 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium';
+  }
+
+  return 'bg-white border-gray-300 text-gray-500 hover:bg-indigo-50 hover:text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium';
+};
+
+/* const loadArticles = () => {
+
+}; */
 
 useHead({
   title: 'Latest Crypto News | Encrypteer.com',

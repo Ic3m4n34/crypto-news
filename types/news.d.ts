@@ -17,3 +17,8 @@ export interface NewsEntry {
 export interface CookedNews extends NewsEntry {
   readingTime: number;
 }
+
+export interface AllNewsType {
+  news: CookedNews[];
+  articleCount: number;
+}
