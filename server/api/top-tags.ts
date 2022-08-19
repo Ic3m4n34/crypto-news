@@ -4,7 +4,7 @@ import getOrSetCache from '@/lib/cache';
 import slugify from '@/helpers/slugify';
 import { Tag } from '@/types/tags';
 
-export default defineEventHandler(async () => getOrSetCache('news:top-tags}', async () => {
+export default defineEventHandler(async () => getOrSetCache('news:top-tags', async () => {
   const tags = await getAllTags(knexClient);
   return tags.map((tag: Tag) => ({
     ...tag,

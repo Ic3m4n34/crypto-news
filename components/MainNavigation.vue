@@ -92,6 +92,7 @@ import { MenuIcon, XIcon } from '@heroicons/vue/outline';
 
 const navigation = [
   { name: 'Home', to: '/' },
+  { name: 'All News', to: '/news' },
   { name: 'Bitcoin', to: '/news/tag/bitcoin' },
   { name: 'Ethereum', to: '/news/tag/ethereum' },
   { name: 'Altcoin', to: '/news/tag/altcoin' },

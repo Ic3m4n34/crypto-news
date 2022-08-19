@@ -7,7 +7,7 @@ import { cookNews } from '@/lib/news';
 import { NewsEntry } from '@/types/news';
 
 export default defineEventHandler(async () => {
-  const topTags = await getOrSetCache('news:top-tags}', async () => {
+  const topTags = await getOrSetCache('news:top-tags', async () => {
     const tags = await getAllTags(knexClient);
     return tags.map((tag: Tag) => ({
       ...tag,

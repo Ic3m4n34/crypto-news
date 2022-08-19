@@ -12,7 +12,7 @@ export default defineEventHandler(async () => {
   const allNews = await getOrSetCache('news:all', () => getAllNews(knexClient));
   const homepageNews = await getOrSetCache('news:homepage', async () => {
     const newsWithReadingTime = cookNews(allNews); // adds readingTime property to each news entry
-    const newsWithTags = newsWithReadingTime.filter((news: NewsEntry) => news.tags && news.tags.length > 0);
+    const newsWithTags = newsWithReadingTime.filter((news: NewsEntry) => news.tags && news.tags.length > 0 && news.tags[0] !== '');
 
     const mappedNews = newsWithTags.map((news: NewsEntry) => { // tags to lowercase
       if (news.tags.length > 0) {
@@ -33,13 +33,16 @@ export default defineEventHandler(async () => {
       };
     });
 
-    return newsFilteredByTag;
+    return newsFilteredByTag.sort((a, b) => b.count - a.count);
   });
+
+  // remove Objects with empty news array
+  const homepageNewsWithoutEmptyArticles = homepageNews.filter((news) => news.news.length > 0);
 
   const newestArticle = allNews.slice(0, 1)[0];
   const frontpageNews = {
     newestArticle,
-    news: homepageNews,
+    news: homepageNewsWithoutEmptyArticles,
   };
 
   return frontpageNews;

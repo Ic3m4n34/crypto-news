@@ -9,10 +9,13 @@
           Find all the latest crypto news here!
         </p>
       </div>
-      <div class="mt-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-3 lg:max-w-none">
+      <div
+        v-if="!pending"
+        class="mt-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-3 lg:max-w-none"
+      >
         <NewsDisplayTile
           v-for="article in allNews.news"
-          :key="article.title"
+          :key="article.id"
           :article="article"
         />
       </div>
@@ -26,7 +29,7 @@
         <NuxtLink
           v-for="paginationPage in paginationPages"
           :key="`page-${paginationPage}`"
-          :to="`/news?page=${paginationPage}`"
+          :to="{path: '/news', query : {page: paginationPage} }"
           :class="getActiveClass(paginationPage)"
         >
           {{ paginationPage }}
@@ -42,34 +45,22 @@
 
 <script setup lang="ts">
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/solid';
-import { computed, ref, watch } from 'vue';
+import { computed, watch } from 'vue';
 import { AllNewsType } from '@/types/news';
 
 const route = useRoute();
 const { query } = route;
 const { page } = query;
-// TODO: use ref instead of computed
-const offset = computed(() => (page ? (+page - 1) * 100 : 0));
 
-const { data: allNews, refresh } = useAsyncData('all-news', () => $fetch<AllNewsType>(`/api/news?limit=100&offset=${offset.value}`));
+const pageReactive = computed(() => route.query.page);
+const offset = computed(() => (pageReactive.value ? (+pageReactive.value - 1) * 100 : 0));
 
-watch(() => route.query, () => {
-  const { query } = route;
-  const { page } = query;
+const { data: allNews, refresh, pending } = useAsyncData('all-news', () => $fetch<AllNewsType>(`/api/news?limit=100&offset=${offset.value}`));
 
-  const offset = computed(() => (page ? (+page - 1) * 100 : 0));
-
-  refresh();
-});
-
-console.log('###################################');
-console.log('###################################');
-console.log(allNews.value);
-console.log('###################################');
-console.log('###################################');
+watch(pageReactive, () => refresh());
 
 const articleCount = computed(() => {
-  if (!allNews) {
+  if (!allNews.value) {
     return 0;
   }
   return allNews.value.articleCount;
@@ -91,10 +82,6 @@ const getActiveClass = (activePage: number) => {
 
   return 'bg-white border-gray-300 text-gray-500 hover:bg-indigo-50 hover:text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium';
 };
-
-/* const loadArticles = () => {
-
-}; */
 
 useHead({
   title: 'Latest Crypto News | Encrypteer.com',

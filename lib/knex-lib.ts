@@ -36,6 +36,16 @@ const getNewsById = async (knexClient: Knex, id: string): Promise<NewsEntry> => 
   }
 };
 
+const getAllNewsCount = async (knexClient: Knex) => {
+  try {
+    const allNewsCount = await knexClient('news').count('id');
+    return allNewsCount[0].count;
+  } catch (error) {
+    console.error('Error in getAllNewsCount: ', error);
+    return null;
+  }
+};
+
 const getAllTags = async (knexClient: Knex) => {
   try {
     const mappedTags = [];
@@ -72,4 +82,5 @@ export {
   getNewsById,
   getAllTags,
   getAllNewsWithPagination,
+  getAllNewsCount,
 };

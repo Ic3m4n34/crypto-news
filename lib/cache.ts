@@ -4,6 +4,7 @@ const getOrSetCache = async (key: string, cb) => {
   if (cachedData) return cachedData;
 
   const data = await cb();
+
   await useStorage().setItem(key, data);
   return data;
 };
