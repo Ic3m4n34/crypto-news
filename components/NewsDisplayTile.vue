@@ -87,7 +87,10 @@ export default defineComponent({
     });
 
     const articleLink = computed(() => `/news/${slugify(article.value.title)}/${article.value.id}`);
-    const categoryLink = computed(() => `/news/tag/${tag.value}` || `/news/tag/${firstArticleTag.value}`);
+    const categoryLink = computed(() => {
+      if (tag.value.length > 0) return `/news/tag/${tag.value}`;
+      return `/news/tag/${firstArticleTag.value.toLowerCase()}`;
+    });
     const publishTime = computed(() => moment(article.value.publish_timestamp).format('MMM DD, YYYY h:mm a'));
     const articleDescription = computed(() => `${article.value.summary.slice(0, 150)}...`);
     const articleImage = computed(() => {

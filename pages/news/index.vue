@@ -24,7 +24,13 @@
 <script setup lang="ts">
 import { NewsEntry } from '@/types/news';
 
-const { data: articles } = useAsyncData('all-news', () => $fetch<NewsEntry[]>('/api/news'));
+const route = useRoute();
+const { query } = route;
+const { page } = query;
+
+const offset = (+page - 1) * 100;
+
+const { data: articles } = useAsyncData('all-news', () => $fetch<NewsEntry[]>(`/api/news?limit=100&offset=${offset}`));
 
 useHead({
   title: 'Latest Crypto News | Encrypteer.com',
