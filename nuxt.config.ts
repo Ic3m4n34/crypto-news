@@ -1,4 +1,5 @@
 import { defineNuxtConfig } from 'nuxt';
+import getRoutes from './helpers/sitemap';
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
@@ -20,6 +21,11 @@ export default defineNuxtConfig({
     '@nuxt/image-edge',
     '@nuxtjs/sitemap',
   ],
+  sitemap: {
+    hostname: 'https://encrypteer.com',
+    gzip: true,
+    routes: getRoutes(),
+  },
   nitro: {
     storage: {
       redis: {
