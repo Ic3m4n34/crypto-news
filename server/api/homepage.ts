@@ -1,4 +1,3 @@
-import { cookNews } from '@/lib/news';
 import { NewsEntry } from '@/types/news';
 import { Tag } from '@/types/tags';
 import getOrSetCache from '@/lib/cache';
@@ -10,8 +9,7 @@ export default defineEventHandler(async () => {
   const allNews = await getOrSetAllNews();
 
   const homepageNews = await getOrSetCache('news:homepage', async () => {
-    const newsWithReadingTime = cookNews(allNews); // adds readingTime property to each news entry
-    const newsWithTags = newsWithReadingTime.filter((news: NewsEntry) => news.tags && news.tags.length > 0 && news.tags[0] !== '');
+    const newsWithTags = allNews.filter((news: NewsEntry) => news.tags && news.tags.length > 0 && news.tags[0] !== '');
 
     const mappedNews = newsWithTags.map((news: NewsEntry) => { // tags to lowercase
       if (news.tags.length > 0) {
