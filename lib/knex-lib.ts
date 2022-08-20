@@ -14,7 +14,7 @@ const getAllNews = async (knexClient: Knex) => {
     ).from('news').where('language', 'english').orderBy('publish_timestamp', 'desc');
     return allNews;
   } catch (error) {
-    console.error('Error in getAllNews: ', error);
+    console.error('Error in getAllNews:', error);
     return null;
   }
 };
