@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
   const articleLimit = +limit;
   const articleOffset = +offset;
 
-  const allNewsCount = await getOrSetCache('news:all', () => getAllNewsCount(knexClient));
+  const allNewsCount = await getOrSetCache('news:all', async () => getAllNewsCount(knexClient));
 
   const dataInCache = await useStorage().getItem(`news:all:limit:${limit}:offset:${offset}`);
 

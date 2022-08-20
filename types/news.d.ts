@@ -20,5 +20,5 @@ export interface CookedNews extends NewsEntry {
 
 export interface AllNewsType {
   news: CookedNews[];
-  articleCount: number;
+  allNewsCount: number;
 }

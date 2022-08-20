@@ -19,10 +19,13 @@ const getAllNewsWithPagination = async (knexClient: Knex, limit: number, offset:
       .orderBy('publish_timestamp', 'desc')
       .limit(limit)
       .offset(offset);
+
+    console.log('getAllNewsWithPagination:', allNews.length);
+
     return allNews;
   } catch (error) {
     console.error('Error in getAllNews: ', error);
-    return null;
+    return [];
   }
 };
 
