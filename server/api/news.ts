@@ -9,17 +9,15 @@ export default defineEventHandler(async (event) => {
   const articleLimit = +limit;
   const articleOffset = +offset;
 
-  const allNewsCount = await getOrSetCache('news:all', async () => getAllNewsCount(knexClient));
+  const allNewsCount = await getOrSetCache('news:all-news-count', async () => getAllNewsCount(knexClient), 60 * 60 * 24);
 
-  const dataInCache = await useStorage().getItem(`news:all:limit:${limit}:offset:${offset}`);
-
-  if (dataInCache) return dataInCache;
-
-  const allNewsWithPagination = await getAllNewsWithPagination(knexClient, articleLimit, articleOffset);
-  useStorage().setItem(`news:all:limit:${limit}:offset:${offset}`, cookNews(allNewsWithPagination));
+  const dataInCache = await getOrSetCache(`news:all:limit:${limit}:offset:${offset}`, async () => {
+    const allNewsWithPagination = await getAllNewsWithPagination(knexClient, articleLimit, articleOffset);
+    return cookNews(allNewsWithPagination);
+  }, 60 * 60 * 24);
 
   return {
-    news: cookNews(allNewsWithPagination),
+    news: dataInCache,
     allNewsCount,
   };
 });

@@ -12,28 +12,25 @@ export default defineEventHandler(async (event) => {
 
   const allNews = await getOrSetCache('news:all', () => getAllNews(knexClient));
 
-  let filteredByTag = await getOrSetCache(`news:tag::${tag}::limit:${articleLimit}`, () => useStorage().setItem(`news:tag::${tag}`));
-  if (filteredByTag) return filteredByTag;
+  const filteredByTag = await getOrSetCache(`news:tag::${tag}::limit:${articleLimit}`, () => {
+    const cookedNews = cookNews(allNews); // adds readingTime property to each news entry
 
-  const cookedNews = cookNews(allNews); // adds readingTime property to each news entry
+    const mappedNews = cookedNews.map((news: NewsEntry) => { // tags to lowercase
+      if (news.tags.length > 0) {
+        return {
+          ...news,
+          tags: news.tags.map((newsTag: string) => newsTag.toLowerCase()),
+        };
+      }
+      return news;
+    });
 
-  const mappedNews = cookedNews.map((news: NewsEntry) => { // tags to lowercase
-    if (news.tags.length > 0) {
-      return {
-        ...news,
-        tags: news.tags.map((newsTag: string) => newsTag.toLowerCase()),
-      };
-    }
-    return news;
+    return mappedNews.filter((news) => news.tags.length > 0 && news.tags.includes(tag));
   });
 
-  filteredByTag = mappedNews.filter((news) => news.tags.length > 0 && news.tags.includes(tag));
-
   if (articleLimit === 'no-limit') {
-    await useStorage().setItem(`news:tag::${tag}::limit:${articleLimit}`, cookNews(filteredByTag));
-    return filteredByTag;
+    return getOrSetCache(`news:tag::${tag}::limit:${articleLimit}`, () => cookNews(filteredByTag));
   }
 
-  await useStorage().setItem(`news:tag::${tag}::limit:${articleLimit}`, cookNews(filteredByTag.slice(0, articleLimit)));
-  return filteredByTag;
+  return getOrSetCache(`news:tag::${tag}::limit:${articleLimit}`, () => cookNews(filteredByTag.slice(0, articleLimit)));
 });

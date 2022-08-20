@@ -1,11 +1,16 @@
-const getOrSetCache = async (key: string, cb) => {
-  const cachedData = await useStorage().getItem(key);
+import 'dotenv/config';
+import Redis from 'ioredis';
 
-  if (cachedData) return cachedData;
+const redisClient = new Redis(process.env.REDIS_URL);
+
+const getOrSetCache = async (key: string, cb, ttlInSeconds?: number) => {
+  const ttl = ttlInSeconds || 60 * 60 * 24;
+  const cachedData = await redisClient.get(key);
+
+  if (cachedData) return JSON.parse(cachedData);
 
   const data = await cb();
-
-  await useStorage().setItem(key, data);
+  redisClient.set(key, JSON.stringify(data), 'EX', ttl);
   return data;
 };
 
