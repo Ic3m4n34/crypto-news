@@ -12,7 +12,7 @@
           Here are the latest <span class="font-bold">{{ capitalizedTag }}</span> news.
         </p>
       </div>
-      <div class="mt-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-3 lg:max-w-none">
+      <div class="mt-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-3 lg:max-w-none px-4">
         <NewsDisplayTile
           v-for="article in articles"
           :key="article.title"
@@ -39,7 +39,7 @@ if (typeof tag !== 'string') {
   unsluggedTag = tag.replace(/-/g, ' ');
 }
 
-const { data: articles } = await useAsyncData(`${tag}-details`, () => $fetch<NewsEntry>(`/api/tags/${unsluggedTag}`));
+const { data: articles } = await useAsyncData(`${tag}-details`, () => $fetch<NewsEntry>(`/api/tags/${unsluggedTag}?limit=100`));
 
 const capitalizedTag = computed(() => capitalizeFirstLetter(tag));
 

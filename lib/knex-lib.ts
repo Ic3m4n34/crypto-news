@@ -3,7 +3,15 @@ import { Knex } from 'knex';
 
 const getAllNews = async (knexClient: Knex) => {
   try {
-    const allNews = await knexClient.select('*').from('news').where('language', 'english').orderBy('publish_timestamp', 'desc');
+    const allNews = await knexClient.select(
+      'id',
+      'title',
+      'summary',
+      'publish_timestamp',
+      'image_url',
+      'tags',
+      's3_image_url',
+    ).from('news').where('language', 'english').orderBy('publish_timestamp', 'desc');
     return allNews;
   } catch (error) {
     console.error('Error in getAllNews: ', error);
@@ -19,8 +27,6 @@ const getAllNewsWithPagination = async (knexClient: Knex, limit: number, offset:
       .orderBy('publish_timestamp', 'desc')
       .limit(limit)
       .offset(offset);
-
-    console.log('getAllNewsWithPagination:', allNews.length);
 
     return allNews;
   } catch (error) {

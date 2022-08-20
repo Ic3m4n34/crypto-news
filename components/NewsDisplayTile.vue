@@ -50,7 +50,7 @@
               {{ publishTime }}
             </time>
             <span aria-hidden="true"> &middot; </span>
-            <span> {{ article.readingTime }}min read </span>
+            <span v-if="article.readingTime"> {{ article.readingTime }}min read </span>
           </div>
         </div>
       </div>

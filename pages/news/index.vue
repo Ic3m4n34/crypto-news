@@ -11,7 +11,7 @@
       </div>
       <div
         v-if="!pending"
-        class="mt-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-3 lg:max-w-none"
+        class="mt-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-3 lg:max-w-none px-4"
       >
         <NewsDisplayTile
           v-for="article in allNews.news"

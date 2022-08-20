@@ -1,15 +1,14 @@
-import { getAllNews } from '@/lib/knex-lib';
-import knexClient from '@/lib/knex-client';
 import { cookNews } from '@/lib/news';
 import { NewsEntry } from '@/types/news';
 import { Tag } from '@/types/tags';
 import getOrSetCache from '@/lib/cache';
-// import { deSlugify } from '@/helpers/slugify';
+import getOrSetAllNews from '@/helpers/all-news';
 
 export default defineEventHandler(async () => {
   const topTags = await $fetch('/api/top-tags');
 
-  const allNews = await getOrSetCache('news:all', () => getAllNews(knexClient));
+  const allNews = await getOrSetAllNews();
+
   const homepageNews = await getOrSetCache('news:homepage', async () => {
     const newsWithReadingTime = cookNews(allNews); // adds readingTime property to each news entry
     const newsWithTags = newsWithReadingTime.filter((news: NewsEntry) => news.tags && news.tags.length > 0 && news.tags[0] !== '');

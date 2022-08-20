@@ -1,8 +1,7 @@
-import { getAllNews } from '@/lib/knex-lib';
-import knexClient from '@/lib/knex-client';
 import { cookNews } from '@/lib/news';
 import { NewsEntry } from '@/types/news';
 import getOrSetCache from '@/lib/cache';
+import getOrSetAllNews from '@/helpers/all-news';
 
 export default defineEventHandler(async (event) => {
   const { tag } = event.context.params;
@@ -10,7 +9,7 @@ export default defineEventHandler(async (event) => {
 
   const articleLimit = +limit || 'no-limit';
 
-  const allNews = await getOrSetCache('news:all', () => getAllNews(knexClient));
+  const allNews = await getOrSetAllNews();
 
   const filteredByTag = await getOrSetCache(`news:tag::${tag}::limit:${articleLimit}`, () => {
     const cookedNews = cookNews(allNews); // adds readingTime property to each news entry
