@@ -62,6 +62,9 @@
             <p class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
               {{ trimmedSummary }}
             </p>
+            <p class="mt-8 text-gray-400 text-md">
+              {{ publishTime }}
+            </p>
             <p class="mt-3 block text-base font-semibold text-indigo-700 sm:text-lg lg:text-base xl:text-lg">
               Read More!
             </p>
@@ -152,6 +155,7 @@
 import slugify from '@/helpers/slugify';
 import { PropType, toRefs, computed } from 'vue';
 import { NewsEntry } from '@/types/news';
+import moment from 'moment';
 
 const props = defineProps({
   newestArticle: {
@@ -185,6 +189,8 @@ const headlineCssClass = computed(() => {
   }
   return 'text-4xl sm:text-5xl xl:text-6xl';
 });
+
+const publishTime = computed(() => moment(newestArticle.value.publish_timestamp).format('MMM DD, YYYY h:mm a'));
 
 const slug = computed(() => slugify(newestArticle.value.title));
 
