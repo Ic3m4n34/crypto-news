@@ -34,15 +34,11 @@ const retrieveNews = async (): Promise<NewsEntry[]> => {
 
   const chunksToFetchArray = Array.from(Array(+numberOfChunks).keys()).map((i) => i + 1);
 
-  await Promise.all(chunksToFetchArray.map(async (i) => {
-    try {
-      const newsChunk = await redisClient.get(`news:all::chunk-${i}`);
-
-      news.push(...JSON.parse(newsChunk));
-    } catch (error) {
-      console.error(`Error getting news chunk ${i}`, error);
-    }
-  }));
+  for (let index = 0; index < chunksToFetchArray.length; index += 1) {
+    const chunkNumber = chunksToFetchArray[index];
+    const newsChunk = await redisClient.get(`news:all::chunk-${chunkNumber}`); // eslint-disable-line
+    news.push(...JSON.parse(newsChunk));
+  }
 
   return news;
 };

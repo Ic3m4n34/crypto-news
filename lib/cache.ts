@@ -12,6 +12,7 @@ const getOrSetCache = async (key: string, cb, ttlInSeconds?: number) => {
     return data;
   } catch (error) {
     console.error(`Error setting cache for key ${key}`, error);
+    return null;
   }
 };
 
