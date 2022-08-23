@@ -35,7 +35,7 @@ import slugify from '@/helpers/slugify';
 export default {
   name: 'IndexPage',
   async setup() {
-    const { data: homepageNews, pending } = await useFetch('/api/homepage');
+    const { data: homepageNews, pending } = await useAsyncData('homepage', () => $fetch('/api/homepage'));
 
     return {
       homepageNews,
