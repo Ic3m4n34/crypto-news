@@ -1,5 +1,6 @@
 import { defineNuxtConfig } from 'nuxt';
 import 'dotenv/config';
+import moment from 'moment';
 
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
@@ -22,6 +23,11 @@ export default defineNuxtConfig({
     '@funken-studio/sitemap-nuxt-3',
   ],
   sitemap: {
+    defaults: {
+      changefreq: 'daily',
+      priority: 1,
+      lastmod: moment().format('YYYY-MM-DD'),
+    },
     hostname: 'https://encrypteer.com',
     gzip: true,
     routes: async () => $fetch('/api/sitemap'),
