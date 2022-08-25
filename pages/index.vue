@@ -35,6 +35,14 @@ import slugify from '@/helpers/slugify';
 export default {
   name: 'IndexPage',
   async setup() {
+    useHead({
+      title: 'Encrypteer.com - Latest Crypto News',
+      charset: 'utf-8',
+      lang: 'en',
+      meta: [
+        { name: 'description', content: 'Find all the latest crypto news, sorted by date, here. Read more!' },
+      ],
+    });
     const { data: homepageNews, pending } = await useAsyncData('homepage', () => $fetch('/api/homepage'));
 
     return {

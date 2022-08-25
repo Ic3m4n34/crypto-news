@@ -21,6 +21,7 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/image-edge',
     '@funken-studio/sitemap-nuxt-3',
+    '@kevinmarrec/nuxt-pwa',
   ],
   sitemap: {
     defaults: {

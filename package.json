@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.18.10",
+    "@kevinmarrec/nuxt-pwa": "^0.4.2",
     "@nuxt/image-edge": "^1.0.0-27657146.da85542",
     "@nuxt/postcss8": "^1.1.3",
     "@nuxtjs/eslint-config-typescript": "^10.0.0",
