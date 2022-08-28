@@ -3,12 +3,12 @@
     class="flex flex-col rounded-lg shadow-lg overflow-hidden"
   >
     <NuxtLink class="flex-shrink-0" :to="articleLink">
-      <img
+      <nuxt-img
         v-if="articleImage"
         class="h-48 w-full object-cover"
         :src="articleImage"
         :alt="article.title"
-      >
+      />
       <div
         v-else
         class="bg-indigo-600 text-white flex justify-center items-center h-48 w-full object-cover text-center p-4"
