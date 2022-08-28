@@ -5,6 +5,7 @@
     <NuxtLink class="flex-shrink-0" :to="articleLink">
       <nuxt-img
         v-if="articleImage"
+        loading="lazy"
         class="h-48 w-full object-cover"
         :src="articleImage"
         :alt="article.title"

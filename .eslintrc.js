@@ -51,5 +51,7 @@ module.exports = {
     useHead: true,
     $fetch: true,
     useAsyncData: true,
+    useLazyFetch: true,
+    useLazyAsyncData: true,
   },
 };
