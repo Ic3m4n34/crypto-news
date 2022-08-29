@@ -11,7 +11,7 @@
               <span class="sr-only">Workflow</span>
               <nuxt-img
                 class="h-8 w-auto sm:h-10"
-                src="icon.png"
+                src="./icon.png"
                 alt="Encrypteer.com Logo"
               />
             </NuxtLink>
@@ -55,7 +55,7 @@
               <div>
                 <nuxt-img
                   class="h-8 w-auto"
-                  src="icon.png"
+                  src="./icon.png"
                   alt=""
                 />
               </div>
