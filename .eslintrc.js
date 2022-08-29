@@ -53,5 +53,6 @@ module.exports = {
     useAsyncData: true,
     useLazyFetch: true,
     useLazyAsyncData: true,
+    onMounted: true,
   },
 };

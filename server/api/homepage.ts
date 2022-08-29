@@ -1,4 +1,4 @@
-import { NewsEntry } from '@/types/news';
+import { NewsEntry, AllNewsType } from '@/types/news';
 import { Tag } from '@/types/tags';
 import getOrSetCache from '@/lib/cache';
 import getOrSetAllNews from '@/helpers/all-news';
@@ -34,7 +34,7 @@ export default defineEventHandler(async () => {
   });
 
   // remove Objects with empty news array
-  const homepageNewsWithoutEmptyArticles = homepageNews.filter((news) => news.news.length > 0);
+  const homepageNewsWithoutEmptyArticles = homepageNews.filter((news: AllNewsType) => news.news.length > 0);
 
   const newestArticle = allNews.slice(0, 1)[0];
   const frontpageNews = {
