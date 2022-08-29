@@ -9,12 +9,11 @@
           <div class="flex items-center justify-between w-full md:w-auto">
             <NuxtLink to="/">
               <span class="sr-only">Encrypteer.com</span>
-              <nuxt-img
-                provider="vercel"
+              <img
                 class="h-8 w-auto sm:h-10"
                 src="./icon.png"
                 alt="Encrypteer.com Logo"
-              />
+              >
             </NuxtLink>
             <div class="-mr-2 flex items-center md:hidden">
               <PopoverButton class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
@@ -54,12 +53,11 @@
           <div class="rounded-lg shadow-md bg-white ring-1 ring-black ring-opacity-5 overflow-hidden">
             <div class="px-5 pt-4 flex items-center justify-between">
               <div>
-                <nuxt-img
-                  provider="vercel"
+                <img
                   class="h-8 w-auto"
                   src="./icon.png"
                   alt=""
-                />
+                >
               </div>
               <div class="-mr-2">
                 <PopoverButton class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
