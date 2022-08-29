@@ -11,7 +11,7 @@
               <span class="sr-only">Encrypteer.com</span>
               <img
                 class="h-8 w-auto sm:h-10"
-                src="./icon.png"
+                src="icon.png"
                 alt="Encrypteer.com Logo"
               >
             </NuxtLink>
@@ -55,7 +55,7 @@
               <div>
                 <img
                   class="h-8 w-auto"
-                  src="./icon.png"
+                  src="icon.png"
                   alt=""
                 >
               </div>
