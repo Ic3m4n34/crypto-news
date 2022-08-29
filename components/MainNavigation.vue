@@ -8,8 +8,9 @@
         <div class="flex items-center flex-1">
           <div class="flex items-center justify-between w-full md:w-auto">
             <NuxtLink to="/">
-              <span class="sr-only">Workflow</span>
+              <span class="sr-only">Encrypteer.com</span>
               <nuxt-img
+                provider="vercel"
                 class="h-8 w-auto sm:h-10"
                 src="./icon.png"
                 alt="Encrypteer.com Logo"
@@ -54,6 +55,7 @@
             <div class="px-5 pt-4 flex items-center justify-between">
               <div>
                 <nuxt-img
+                  provider="vercel"
                   class="h-8 w-auto"
                   src="./icon.png"
                   alt=""
