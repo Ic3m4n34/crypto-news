@@ -49,6 +49,11 @@ useHead({
   lang: 'en',
   meta: [
     { name: 'description', content: `We've curated ${capitalizedTag.value} News from every Crypto News Source. Read all the latest Ethereum News!` },
+    { hid: 'og:title', property: 'og:title', content: `${capitalizedTag.value} | Encrypteer.com` },
+    { hid: 'og:site_name', property: 'og:site_name', content: `${capitalizedTag.value} | Encrypteer.com` },
+    { hid: 'og:description', property: 'og:description', content: `We've curated ${capitalizedTag.value} News from every Crypto News Source. Read all the latest Ethereum News!` },
+    { hid: 'og:image', property: 'og:image', content: 'https://encrypteer.com/icon.png' },
+    { hid: 'og:url', property: 'og:url', content: `https://encrypteer.com/news/tag/${tag}` },
   ],
   link: [
     {

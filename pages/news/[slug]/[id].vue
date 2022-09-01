@@ -170,6 +170,11 @@ useHead({
   lang: 'en',
   meta: [
     { name: 'description', content: summary.value },
+    { hid: 'og:title', property: 'og:title', content: `${headline.value} | Encrypteer.com` },
+    { hid: 'og:site_name', property: 'og:site_name', content: `${headline.value} | Encrypteer.com` },
+    { hid: 'og:description', property: 'og:description', content: summary.value },
+    { hid: 'og:image', property: 'og:image', content: articleImage.value },
+    { hid: 'og:url', property: 'og:url', content: `https://encrypteer.com/news/${slug}/${id}` },
   ],
   link: [
     {

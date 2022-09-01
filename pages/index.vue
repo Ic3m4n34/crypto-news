@@ -45,6 +45,11 @@ export default {
       lang: 'en',
       meta: [
         { name: 'description', content: 'Find all the latest crypto news, sorted by date, here. Read more!' },
+        { hid: 'og:title', property: 'og:title', content: 'Encrypteer.com - Latest Crypto News' },
+        { hid: 'og:site_name', property: 'og:site_name', content: 'Encrypteer.com - Latest Crypto News' },
+        { hid: 'og:description', property: 'og:description', content: 'Find all the latest crypto news, sorted by date, here. Read more!' },
+        { hid: 'og:image', property: 'og:image', content: 'https://encrypteer.com/icon.png' },
+        { hid: 'og:url', property: 'og:url', content: 'https://encrypteer.com/' },
       ],
       link: [
         {
