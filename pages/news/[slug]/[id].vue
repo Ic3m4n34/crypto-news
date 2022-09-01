@@ -133,7 +133,7 @@ import { computed } from 'vue';
 import { NewsEntry } from '@/types/news';
 
 const route = useRoute();
-const { id } = route.params;
+const { id, slug } = route.params;
 
 const { data: article } = await useAsyncData(`${id}-details`, () => $fetch<NewsEntry>(`/api/id/${id}`));
 
@@ -170,6 +170,12 @@ useHead({
   lang: 'en',
   meta: [
     { name: 'description', content: summary.value },
+  ],
+  link: [
+    {
+      rel: 'canonical',
+      href: `https://encrypteer.com/news/${slug}/${id}`,
+    },
   ],
 });
 

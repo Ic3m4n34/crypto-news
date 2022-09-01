@@ -37,7 +37,6 @@
     "lodash.chunk": "^4.2.0",
     "moment": "^2.29.4",
     "nuxt": "3.0.0-rc.8",
-    "nuxt-canonical": "^1.0.6",
     "pg": "^8.7.3",
     "sass": "^1.54.4",
     "sass-loader": "10",

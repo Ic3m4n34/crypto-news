@@ -22,11 +22,6 @@ export default defineNuxtConfig({
     '@nuxt/image-edge',
     '@funken-studio/sitemap-nuxt-3',
     '@kevinmarrec/nuxt-pwa',
-    ['nuxt-canonical', {
-      baseUrl: 'https://encrypteer.com',
-      trailingSlashes: false,
-      forceLowercase: true,
-    }],
   ],
   sitemap: {
     defaults: {

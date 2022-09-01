@@ -50,6 +50,12 @@ useHead({
   meta: [
     { name: 'description', content: `We've curated ${capitalizedTag.value} News from every Crypto News Source. Read all the latest Ethereum News!` },
   ],
+  link: [
+    {
+      rel: 'canonical',
+      href: `https://encrypteer.com/news/tag/${tag}`,
+    },
+  ],
 });
 
 </script>

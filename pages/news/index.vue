@@ -90,5 +90,11 @@ useHead({
   meta: [
     { name: 'description', content: 'Find all the latest crypto news, sorted by date, here. Read more!' },
   ],
+  link: [
+    {
+      rel: 'canonical',
+      href: 'https://encrypteer.com/news',
+    },
+  ],
 });
 </script>
