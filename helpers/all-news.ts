@@ -29,6 +29,7 @@ const splitAllNews = async (news: NewsEntry[]): Promise<string> => {
 };
 
 const retrieveNews = async (): Promise<NewsEntry[]> => {
+  console.time('retrieveNews');
   const numberOfChunks = await redisClient.get('news:all::number-of-chunks');
   const news: NewsEntry[] = [];
 
@@ -36,9 +37,12 @@ const retrieveNews = async (): Promise<NewsEntry[]> => {
 
   for (let index = 0; index < chunksToFetchArray.length; index += 1) {
     const chunkNumber = chunksToFetchArray[index];
+    console.time(`retrieveNews::chunk-${chunkNumber}`);
     const newsChunk = await redisClient.get(`news:all::chunk-${chunkNumber}`); // eslint-disable-line
     news.push(...JSON.parse(newsChunk));
+    console.timeEnd(`retrieveNews::chunk-${chunkNumber}`);
   }
+  console.timeEnd('retrieveNews');
 
   return news;
 };
