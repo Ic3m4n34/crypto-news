@@ -6,11 +6,8 @@ import getOrSetAllNews from '@/helpers/all-news';
 export default defineEventHandler(async () => {
   const topTags = await $fetch('/api/top-tags');
 
-  console.time('all-news');
   const allNews = await getOrSetAllNews();
-  console.timeEnd('all-news');
 
-  console.time('homepage');
   const homepageNews = await getOrSetCache('news:homepage', async () => {
     const newsWithTags = allNews.filter((news: NewsEntry) => news.tags && news.tags.length > 0 && news.tags[0] !== '');
 
@@ -35,12 +32,9 @@ export default defineEventHandler(async () => {
 
     return newsFilteredByTag.sort((a, b) => b.count - a.count);
   });
-  console.timeEnd('homepage');
 
   // remove Objects with empty news array
-  console.time('homepage-filter');
   const homepageNewsWithoutEmptyArticles = homepageNews.filter((news: AllNewsType) => news.news.length > 0);
-  console.timeEnd('homepage-filter');
 
   const newestArticle = allNews.slice(0, 1)[0];
   const frontpageNews = {
