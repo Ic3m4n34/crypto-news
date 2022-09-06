@@ -121,6 +121,7 @@
                 :class="{ 'bg-white': hasOwnImage }"
               >
                 <nuxt-img
+                  v-if="hasOwnImage"
                   class="w-full"
                   :src="articleImage"
                   :alt="newestArticle.title"
@@ -145,6 +146,12 @@
                     </svg>
                   </span>
                 </nuxt-img>
+                <img
+                  v-else
+                  :src="articleImage"
+                  :alt="newestArticle.title"
+                  class="w-full"
+                >
               </NuxtLink>
             </div>
           </div>
