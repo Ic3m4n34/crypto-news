@@ -111,12 +111,15 @@
                 fill="url(#4f4f415c-a0e9-44c2-9601-6ded5a34a13e)"
               />
             </svg>
-            <div class="relative mx-auto w-full rounded-lg shadow-lg lg:max-w-md">
+            <div
+              class="relative mx-auto w-full lg:max-w-md"
+              :class="{ 'rounded-lg shadow-lg': hasOwnImage }"
+            >
               <NuxtLink
                 :to="link"
-                class="relative block w-full bg-white rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                class="relative block w-full rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                :class="{ 'bg-white': hasOwnImage }"
               >
-                <span class="sr-only">Watch our video to learn more</span>
                 <nuxt-img
                   class="w-full"
                   :src="articleImage"
@@ -180,7 +183,17 @@ const articleImage = computed(() => {
   if (newestArticle.value.s3_image_url) {
     return newestArticle.value.s3_image_url;
   }
-  return null;
+  return 'icon.png';
+});
+
+const hasOwnImage = computed(() => {
+  if (newestArticle.value.s3_image_url && newestArticle.value.s3_image_url.includes('"')) {
+    return true;
+  }
+  if (newestArticle.value.s3_image_url) {
+    return true;
+  }
+  return false;
 });
 
 const headlineCssClass = computed(() => {
