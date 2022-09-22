@@ -4,7 +4,7 @@ import chunk from 'lodash.chunk';
 import { getAllNews } from '@/lib/knex-lib';
 import knexClient from '@/lib/knex-client';
 // upstash limit: 1048576 bytes (1MB)
-const UPSTASH_LIMIT_IN_BYTES = 1000000;
+const UPSTASH_LIMIT_IN_BYTES = 900000;
 
 type SizeInfo = {
   bytes: number;
@@ -24,7 +24,11 @@ const splitAllNews = async (news: NewsEntry[]): Promise<string> => {
 
   const newsChunks = chunk(news, chunkSize);
 
-  await Promise.all(newsChunks.map((newsChunk: NewsEntry[], i: number) => redisClient.set(`news:all::chunk-${i + 1}`, JSON.stringify(newsChunk))));
+  try {
+    await Promise.all(newsChunks.map((newsChunk: NewsEntry[], i: number) => redisClient.set(`news:all::chunk-${i + 1}`, JSON.stringify(newsChunk))));
+  } catch (error) {
+    console.error('Error setting news chunks', error);
+  }
   return redisClient.set('news:all::number-of-chunks', newsChunks.length);
 };
 

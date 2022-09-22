@@ -2,7 +2,13 @@ import redisClient from '@/lib/redis';
 
 const getOrSetCache = async (key: string, cb, ttlInSeconds?: number) => {
   const ttl = ttlInSeconds || 60 * 60 * 24;
-  const cachedData = await redisClient.get(key);
+  let cachedData = null;
+
+  try {
+    cachedData = await redisClient.get(key);
+  } catch (error) {
+    console.error(`Error fetching cache for key ${key}`, error);
+  }
 
   if (cachedData) return JSON.parse(cachedData);
 
